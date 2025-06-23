@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, FormControl } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { setCurrentUser } from "./reducer";
 import * as client from "./client";
 import MyProfile from "./MyProfile";
 import SocialProfile from "./SocialProfile";
@@ -41,7 +39,7 @@ export default function Profile() {
         <div className="wd-profile-screen">
             {current ?
                 <MyProfile profile={profile} setProfile={setProfile} /> :
-                <SocialProfile profile={profile} setProfile={setProfile} />
+                <SocialProfile profile={profile} />
              }
         </div>
     );

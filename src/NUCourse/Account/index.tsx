@@ -1,6 +1,4 @@
-import { useSelector } from "react-redux";
 import { Route, Routes, Navigate } from "react-router-dom";
-import * as client from "./client";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import Profile from "./Profile";

@@ -1,8 +1,8 @@
 ﻿import * as client from "../Reviews/client";
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-export default function SocialProfile({ profile, setProfile }:
-    { profile: any, setProfile: (profile: any) => void }) {
+export default function SocialProfile({ profile }:
+    { profile: any }) {
     const [reviews, setReviews] = useState<any>([]);
 
     const fetchReviews = async () => {
