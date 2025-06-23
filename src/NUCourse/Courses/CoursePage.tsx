@@ -67,6 +67,14 @@ export default function CoursePage() {
             <hr />
 
             <h2>Reviews</h2>
+            {!currentUser &&
+                <div className="mb-3 align-items-center">
+                    <span>Please sign in to add a review:{" "}</span>
+                    <Link to="/NUCourse/Account/Signin" className="btn btn-primary ms-3">
+                        Signin
+                    </Link>
+                </div>
+            }
             <div id="wd-course-reviews" className="d-flex gap-4 align-items-start">
                 <div className="flex-grow-1">
                     {reviews.map((review: any) =>
