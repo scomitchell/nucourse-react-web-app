@@ -197,6 +197,7 @@ export default function MyProfile({ profile, setProfile }:
                                                     <FormControl
                                                         placeholder="Add comments"
                                                         id="wd-comments"
+                                                        value={review.notes}
                                                         type="text"
                                                         onChange={(e) => setReview({ ...review, notes: e.target.value })}
                                                     />
