@@ -29,9 +29,13 @@ export default function SocialProfile({ profile }:
     return (
         <div id="wd-social-profile">
             <h1>{profile.username}</h1>
+            <hr />
             <h2>Reviews</h2>
             <hr />
-            {reviews.map((review: any) =>
+            {reviews.length === 0 ?
+                <span>No reviews written</span>
+                :
+            reviews.map((review: any) =>
                 <div id="wd-reviews">
                     <Card className="mb-2 text-start user-review-card">
                         <Card.Body className="card-body">

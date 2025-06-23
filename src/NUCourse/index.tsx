@@ -8,6 +8,7 @@ export default function NUCourse() {
     const [courses, setCourses] = useState<any>([]);
     const [showForm, setShowForm] = useState(false);
     const [course, setCourse] = useState<any>({});
+    const [loading, setLoading] = useState(false);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
     const renderStars = (rating: number) => {
@@ -55,18 +56,26 @@ export default function NUCourse() {
     const fetchCourses = async () => {
         const courses = await client.findAllCourses();
         setCourses(courses);
+        setLoading(false);
     };
 
     useEffect(() => {
+        setLoading(true);
         fetchCourses();
     }, []);
+
+    if (loading) {
+        return (
+            <p>Loading ...</p>
+        );
+    }
 
     return (
         <div id="wd-nucourse">
 
             <div className="d-flex align-items-center">
                 <h1 className="p-3">NUCourse</h1>
-                {currentUser && currentUser.role === "ADMIN" && (
+                {currentUser && (currentUser.role === "ADMIN" || currentUser.role === "FACULTY") && (
                     <Button onClick={() => setShowForm(true)} className="btn btn-danger">
                         Add New Course
                     </Button>

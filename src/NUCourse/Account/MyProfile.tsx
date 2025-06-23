@@ -92,6 +92,17 @@ export default function MyProfile({ profile, setProfile }:
                     </Col>
                 </FormGroup>
 
+                <FormGroup as={Row} className="mb-3 align-items-center">
+                    <FormLabel column sm={4}>Password</FormLabel>
+                    <Col sm={8}>
+                        <select onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+                            className="form-control mb-2" id="wd-role" value={profile.role}>
+                            <option value="USER">User</option>
+                            <option value="FACULTY">School Faculty</option>
+                        </select>
+                    </Col>
+                </FormGroup>
+
                 <Button onClick={updateProfile} id="wd-update-profile-btn" className="btn btn-danger w-100">
                     Update Profile
                 </Button>
@@ -99,7 +110,10 @@ export default function MyProfile({ profile, setProfile }:
 
             <div id="wd-my-reviews" className="ps-3">
                 <h2>Reviews</h2>
-                {reviews.map((review: any) =>
+                {reviews.length === 0 ?
+                    <span>No Reviews Posted</span>
+                :
+                reviews.map((review: any) =>
                     <div id="wd-reviews">
                         <Card className="mb-2 text-start user-review-card">
                             <Card.Body className="card-body">
