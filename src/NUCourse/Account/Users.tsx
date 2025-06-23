@@ -10,6 +10,10 @@ export default function Users() {
     const [user, setUser] = useState<any>({});
     const [editing, setEditing] = useState(false);
 
+    const deleteUser = async (userId: string) => {
+        await client.deleteUser(userId);
+    };
+
     const updateUser = async () => {
         await client.updateUser(user);
         setEditing(false);
@@ -22,7 +26,7 @@ export default function Users() {
 
     useEffect(() => {
         fetchAllUsers();
-    }, [users]);
+    }, []);
 
     return (
         <div id="wd-manage-users">
@@ -64,17 +68,26 @@ export default function Users() {
                                             <option value="ADMIN">Admin</option>
                                         </select>
                                     </td>
-                                    <Button onClick={updateUser} className="bg-danger text-white border-0 ms-2">
+                                    <Button onClick={updateUser} className="bg-primary text-white border-0 ms-2">
                                         Save
                                     </Button>
-                                    <Button onClick={() => setEditing(false)} className="border-0 ms-2">
+                                    <Button onClick={() => setEditing(false)} className="bg-secondary text-white border-0 ms-2">
                                         Cancel
+                                    </Button>
+                                    <Button onClick={() => {
+                                            if (window.confirm("Are you sure you want to delete this user?")) {
+                                                deleteUser(user._id);
+                                            }
+                                            }}
+                                            className="border-0 ms-2 bg-danger text-white">
+                                        Delete User
                                     </Button>
                                 </>
                             }
                             <Button onClick={() => setEditing(!editing)} className="ms-2">
                                 <FaPencil className="text-danger" />
                             </Button>
+
                         </tr>
                     ))}
                 </tbody>
