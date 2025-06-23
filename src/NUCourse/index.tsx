@@ -9,6 +9,7 @@ export default function NUCourse() {
     const [showForm, setShowForm] = useState(false);
     const [course, setCourse] = useState<any>({});
     const [loading, setLoading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
     const renderStars = (rating: number) => {
@@ -60,6 +61,8 @@ export default function NUCourse() {
     };
 
     useEffect(() => {
+        const savedTerm = localStorage.getItem("searchTerm") || "";
+        setSearchTerm(savedTerm);
         setLoading(true);
         fetchCourses();
     }, []);
@@ -87,8 +90,16 @@ export default function NUCourse() {
 
             <div className="p-3 d-flex">
                 <div>
-                    <FormControl className="mb-2" placeholder="Search" id="wd-search"
-                        onChange={(e) => filterCoursesByTitle(e.target.value)} />
+                    <FormControl
+                        className="mb-2"
+                        placeholder="Search"
+                        id="wd-search"
+                        onChange={(e) => {
+                            const searchTerm = e.target.value;
+                            localStorage.setItem("searchTerm", searchTerm);
+                            filterCoursesByTitle(searchTerm);
+                        }}
+                    />
 
                     {courses.map((course: any) =>
                         <Card className="mb-2">
