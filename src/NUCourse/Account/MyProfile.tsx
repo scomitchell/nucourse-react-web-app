@@ -48,8 +48,8 @@ export default function MyProfile({ profile, setProfile }:
     }, [profile])
 
     return (
-        <div id="wd-my-profile" className="d-flex">
-            <div id="wd-my-profile-details">
+        <div id="wd-my-profile" className="d-flex row">
+            <div id="wd-my-profile-details" className="col-sm-8 col-md-4">
                 <h1>{profile.username}</h1>
                 <FormGroup as={Row} className="mb-3 align-items-center">
                     <FormLabel column sm={4}>First name</FormLabel>
@@ -114,9 +114,11 @@ export default function MyProfile({ profile, setProfile }:
                 <Button onClick={updateProfile} id="wd-update-profile-btn" className="btn btn-danger w-100">
                     Update Profile
                 </Button>
+
+                <hr />
             </div>
 
-            <div id="wd-my-reviews" className="ps-3">
+            <div id="wd-my-reviews" className="ps-3 col-sm-8 col-md-8">
                 <h2>Reviews</h2>
                 {reviews.length === 0 ?
                     <span>No Reviews Posted</span>
