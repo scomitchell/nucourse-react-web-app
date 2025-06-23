@@ -93,6 +93,7 @@ export default function NUCourse() {
                         className="mb-2"
                         placeholder="Search"
                         id="wd-search"
+                        value={searchTerm}
                         onChange={(e) => {
                             const searchTerm = e.target.value;
                             localStorage.setItem("searchTerm", searchTerm);
