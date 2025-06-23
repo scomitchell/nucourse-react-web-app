@@ -83,7 +83,6 @@ export default function NUCourse() {
                         Add New Course
                     </Button>
                 )}
-
             </div>
 
             <h4 className="ms-3">Prepare for your NEU courses before you enroll</h4>

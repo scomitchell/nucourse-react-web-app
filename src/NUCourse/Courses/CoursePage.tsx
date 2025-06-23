@@ -10,8 +10,14 @@ export default function CoursePage() {
     const [course, setCourse] = useState<any>({});
     const [reviews, setReviews] = useState<any>([]);
     const [review, setReview] = useState<any>({});
+    const [editing, setEditing] = useState(false);
     
     const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+    const updateCourse = async () => {
+        await client.updateCourse(course);
+        setEditing(false);
+    };
 
     const fetchCourse = async () => {
         if (!courseNum) {
@@ -60,12 +66,40 @@ export default function CoursePage() {
 
     return (
         <div id="wd-course-page">
-            <h1>{course.title}</h1>
-            <h2>Course Number: {course.number}</h2>
-            <span>Department: {course.department}</span> <br />
-            <span>Subject: {course.subject}</span>
-            <hr />
 
+            {!editing ?
+                <>
+                    <div className="d-flex align-items-center">
+                        <h1>{course.title}</h1>
+                        {currentUser && (currentUser.role === "ADMIN" || currentUser.role === "FACULTY") &&
+                            <Button onClick={(e) => {
+                                e.preventDefault()
+                                setEditing(true)
+                            }} className="btn btn-warning ms-2">
+                                Edit Course
+                            </Button>
+                        }
+                    </div>
+                    <h2>Course Number: {course.number}</h2>
+                    <span>Department: {course.department}</span> <br />
+                    <span>Subject: {course.subject}</span>
+                    <hr />
+                </>
+                :
+                <>
+                    <FormControl placeholder="Course Title" className="mb-2" value={course.title}
+                        onChange={(e) => setCourse({ ...course, title: e.target.value })} />
+                    <FormControl placeholder="Course Number" className="mb-2" value={course.number}
+                        onChange={(e) => setCourse({ ...course, number: e.target.value })} />
+                    <FormControl placeholder="Course Department" className="mb-2" value={course.department}
+                        onChange={(e) => setCourse({ ...course, department: e.target.value })} />
+                    <FormControl placeholder="Course Subject" className="mb-2" value={course.subject}
+                        onChange={(e) => setCourse({ ...course, subject: e.target.value })} />
+                    <Button onClick={updateCourse} className="btn btn-primary">
+                        Save Course
+                    </Button>
+                </>
+            }
             <h2>Reviews</h2>
             {!currentUser &&
                 <div className="mb-3 align-items-center">

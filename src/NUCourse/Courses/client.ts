@@ -25,7 +25,7 @@ export const findCourseByNumber = async (courseNum: String) => {
 }
 
 export const updateCourse = async (course: any) => {
-    const response = await axiosWithCredentials.put(`${COURSES_API}/${course._id}`, course);
+    const response = await axiosWithCredentials.put(`${COURSES_API}/${course.number}`, course);
     return response.data;
 }
 
