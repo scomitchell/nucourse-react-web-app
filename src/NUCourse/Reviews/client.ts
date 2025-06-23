@@ -18,3 +18,8 @@ export const createReview = async (review: any) => {
     const response = await axiosWithCredentials.post(`${REVIEWS_API}`, review);
     return response.data;
 }
+
+export const updateReview = async (review: any) => {
+    const response = await axiosWithCredentials.put(`${REVIEWS_API}/${review._id}`, review);
+    return response.data;
+}

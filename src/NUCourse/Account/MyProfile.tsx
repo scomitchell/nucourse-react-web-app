@@ -10,6 +10,8 @@ export default function MyProfile({ profile, setProfile }:
     { profile: any, setProfile: (profile: any) => void }) {
     const dispatch = useDispatch();
     const [reviews, setReviews] = useState<any>([]);
+    const [review, setReview] = useState<any>({});
+    const [editing, setEditing] = useState(false);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
     const updateProfile = async () => {
@@ -17,6 +19,12 @@ export default function MyProfile({ profile, setProfile }:
         dispatch(setCurrentUser(updatedProfile));
         console.log(currentUser);
     };
+
+    const updateReview = async () => {
+        await reviewClient.updateReview(review);
+        setEditing(false);
+        await fetchReviews();
+    }
 
     const renderStars = (rating: number) => {
         const fullStars = Math.floor(rating);
@@ -120,21 +128,88 @@ export default function MyProfile({ profile, setProfile }:
                                 <Card.Title className="wd-card-title">{review.course}</Card.Title>
                             </Card.Body>
                             <Card.Text className="wd-card-text p-2">
-                                <div>
-                                    <strong>Overall Rating:</strong> {review.ovr_rating} {" "}
-                                    <span className="text-warning">{renderStars(review.ovr_rating)}</span>
-                                </div>
-                                <div>
-                                    <strong>Course Difficulty:</strong> {review.difficulty} {" "}
-                                    <span className="text-warning">{renderStars(review.difficulty)}</span>
-                                </div>
-                                <div>
-                                    <strong>Learning Score:</strong> {review.learning_score} {" "}
-                                    <span className="text-warning">{renderStars(review.learning_score)}</span>
-                                </div>
-                                <div>
-                                    <strong>Notes:</strong> {review.notes}
-                                </div>
+                                {!editing ?
+                                    <>
+                                        <div>
+                                            <strong>Overall Rating:</strong> {review.ovr_rating} {" "}
+                                            <span className="text-warning">{renderStars(review.ovr_rating)}</span>
+                                        </div>
+                                        <div>
+                                            <strong>Course Difficulty:</strong> {review.difficulty} {" "}
+                                            <span className="text-warning">{renderStars(review.difficulty)}</span>
+                                        </div>
+                                        <div>
+                                            <strong>Learning Score:</strong> {review.learning_score} {" "}
+                                            <span className="text-warning">{renderStars(review.learning_score)}</span>
+                                        </div>
+                                        <div>
+                                            <strong>Notes:</strong> {review.notes}
+                                        </div>
+                                        <Button onClick={() => setEditing(true)} className="mb-2 btn btn-danger">
+                                            Edit
+                                        </Button>
+                                    </>
+                                    :
+                                    <>
+                                        <div style={{ minWidth: "300px" }}>
+                                            <FormGroup as={Row} className="mb-3 align-items-center">
+                                                <FormLabel column sm={4}>Overall rating (1 to 5)</FormLabel>
+                                                <Col sm={8}>
+                                                    <FormControl
+                                                        placeholder="Overall rating"
+                                                        id="wd-ovr-rating"
+                                                        type="number"
+                                                        defaultValue={review.ovr_rating}
+                                                        onChange={(e) => setReview({ ...review, ovr_rating: parseFloat(e.target.value) })}
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+
+                                            <FormGroup as={Row} className="mb-3 align-items-center">
+                                                <FormLabel column sm={4}>Difficulty Rating (1 to 5)</FormLabel>
+                                                <Col sm={8}>
+                                                    <FormControl
+                                                        placeholder="difficulty"
+                                                        id="wd-difficulty"
+                                                        type="number"
+                                                        defaultValue={review.difficulty}
+                                                        onChange={(e) => setReview({ ...review, difficulty: parseFloat(e.target.value) })}
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+
+                                            <FormGroup as={Row} className="mb-3 align-items-center">
+                                                <FormLabel column sm={4}>Educational Value (1 to 5)</FormLabel>
+                                                <Col sm={8}>
+                                                    <FormControl
+                                                        placeholder="educational value"
+                                                        id="wd-education"
+                                                        type="number"
+                                                        defaultValue={review.learning_score}
+                                                        onChange={(e) => setReview({ ...review, learning_score: parseFloat(e.target.value) })}
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+
+                                            <FormGroup as={Row} className="mb-3 align-items-center">
+                                                <FormLabel column sm={4}>Comments</FormLabel>
+                                                <Col sm={8}>
+                                                    <FormControl
+                                                        placeholder="Add comments"
+                                                        id="wd-comments"
+                                                        type="text"
+                                                        onChange={(e) => setReview({ ...review, notes: e.target.value })}
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+
+                                            <Button onClick={updateReview} id="wd-add-review-btn" className="w-100 btn btn-danger">
+                                                Update Review
+                                            </Button>
+                                        </div>
+                                    </>
+                                }
+                                
                             </Card.Text>
                         </Card>
                     </div>
