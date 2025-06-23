@@ -87,115 +87,117 @@ export default function NUCourse() {
 
             <h4 className="ms-3">Prepare for your NEU courses before you enroll</h4>
 
-            <div className="p-3 d-flex">
-                <div>
-                    <FormControl
-                        className="mb-2"
-                        placeholder="Search"
-                        id="wd-search"
-                        value={searchTerm}
-                        onChange={(e) => {
-                            const searchTerm = e.target.value;
-                            localStorage.setItem("searchTerm", searchTerm);
-                            filterCoursesByTitle(searchTerm);
-                        }}
-                    />
+            <div className="row">
+                <div className="p-3 d-flex">
+                    <div className="col-sm-8 col-md-6">
+                        <FormControl
+                            className="mb-2"
+                            placeholder="Search"
+                            id="wd-search"
+                            defaultValue={searchTerm}
+                            onChange={(e) => {
+                                const searchTerm = e.target.value;
+                                localStorage.setItem("searchTerm", searchTerm);
+                                filterCoursesByTitle(searchTerm);
+                            }}
+                        />
 
-                    {courses.map((course: any) =>
+                        {courses.map((course: any) =>
+                            <Card className="mb-2">
+                                <Link to={`/NUCourse/Courses/${course.number}`}
+                                    className="wd-dashboard-course-link text-decoration-none text-dark" >
+                                <Card.Body>
+                                        <Card.Title className="card-body">{course.title} ({course.number})</Card.Title>
+                                        <Card.Text className="wd-card-text p-2">
+                                            <div>
+                                                <strong>Average Overall Rating:</strong> {course.ovr_rating} {" "}
+                                                <span className="text-warning">{renderStars(course.ovr_rating)}</span>
+                                            </div>
+                                            <div>
+                                                <strong>Average Course Difficulty:</strong> {course.difficulty} {" "}
+                                                <span className="text-warning">{renderStars(course.difficulty)}</span>
+                                            </div>
+                                            <div>
+                                                <strong>Average Learning Score:</strong> {course.learning_score} {" "}
+                                                <span className="text-warning">{renderStars(course.learning_score)}</span>
+                                            </div>
+                                        </Card.Text>
+                                        {currentUser && currentUser.role === "ADMIN" &&
+                                            <Button onClick={(e) => {
+                                                e.preventDefault()
+                                                deleteCourse(course._id)
+                                            }} className="btn btn-danger">
+                                                Delete Course
+                                            </Button>
+                                        }
+                                    </Card.Body>
+                                </Link>
+                            </Card>
+                        )}
+                    </div>
+
+                    <div className="ps-3 col-sm-4 col-md-6">
                         <Card className="mb-2">
-                            <Link to={`/NUCourse/Courses/${course.number}`}
-                                className="wd-dashboard-course-link text-decoration-none text-dark" >
                             <Card.Body>
-                                    <Card.Title className="card-body">{course.title} ({course.number})</Card.Title>
-                                    <Card.Text className="wd-card-text p-2">
-                                        <div>
-                                            <strong>Average Overall Rating:</strong> {course.ovr_rating} {" "}
-                                            <span className="text-warning">{renderStars(course.ovr_rating)}</span>
-                                        </div>
-                                        <div>
-                                            <strong>Average Course Difficulty:</strong> {course.difficulty} {" "}
-                                            <span className="text-warning">{renderStars(course.difficulty)}</span>
-                                        </div>
-                                        <div>
-                                            <strong>Average Learning Score:</strong> {course.learning_score} {" "}
-                                            <span className="text-warning">{renderStars(course.learning_score)}</span>
-                                        </div>
-                                    </Card.Text>
-                                    {currentUser && currentUser.role === "ADMIN" &&
-                                        <Button onClick={(e) => {
-                                            e.preventDefault()
-                                            deleteCourse(course._id)
-                                        }} className="btn btn-danger">
-                                            Delete Course
-                                        </Button>
-                                    }
-                                </Card.Body>
-                            </Link>
+                                <Card.Title>Created by Scott Brinkley</Card.Title>
+                                <Card.Text className="p-2">
+                                    Section 04 <br />
+                                    <a href="https://github.com/scomitchell/nucourse-react-web-app">
+                                        React Project Github
+                                    </a> <br />
+                                    <a href="https://github.com/scomitchell/nucourse-node-server-app">
+                                        Node Project Github
+                                    </a>
+                                </Card.Text>
+                            </Card.Body>
                         </Card>
-                    )}
-                </div>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>Methodology</Card.Title>
+                                <Card.Text className="p-2">
+                                    <p> Overall rating: 1 to 5 where 5 is the best <br />
+                                        Course Difficulty: 1 to 5 where 5 is the most difficult <br />
+                                        Learning Score: 1 to 5 where 5 has the most educational value
+                                    </p>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </div>
 
-                <div className="ps-3">
-                    <Card className="mb-2">
-                        <Card.Body>
-                            <Card.Title>Created by Scott Brinkley</Card.Title>
-                            <Card.Text className="p-2">
-                                Section 04 <br />
-                                <a href="https://github.com/scomitchell/nucourse-react-web-app">
-                                    React Project Github
-                                </a> <br />
-                                <a href="https://github.com/scomitchell/nucourse-node-server-app">
-                                    Node Project Github
-                                </a>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Methodology</Card.Title>
-                            <Card.Text className="p-2">
-                                <p>Overall rating: 1 to 5 where 5 is the best <br />
-                                    Course Difficulty: 1 to 5 where 5 is the most difficult <br />
-                                    Learning Score: 1 to 5 where 5 has the most educational value
-                                </p>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <Modal show={showForm} onHide={() => setShowForm(false)} centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add New Course</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <FormControl
+                                placeholder="Title"
+                                className="mb-2"
+                                onChange={(e) => setCourse({ ...course, title: e.target.value })}
+                            />
+                            <FormControl
+                                placeholder="Department"
+                                className="mb-2"
+                                onChange={(e) => setCourse({ ...course, department: e.target.value })}
+                            />
+                            <FormControl
+                                placeholder="Subject"
+                                className="mb-2"
+                                onChange={(e) => setCourse({ ...course, subject: e.target.value })}
+                            />
+                            <FormControl
+                                placeholder="Course Number"
+                                className="mb-2"
+                                onChange={(e) => setCourse({ ...course, number: e.target.value })}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowForm(false)}>
+                                Cancel
+                            </Button>
+                            <Button onClick={createCourse} className="btn btn-danger">Add Course</Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
-
-                <Modal show={showForm} onHide={() => setShowForm(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add New Course</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FormControl
-                            placeholder="Title"
-                            className="mb-2"
-                            onChange={(e) => setCourse({ ...course, title: e.target.value })}
-                        />
-                        <FormControl
-                            placeholder="Department"
-                            className="mb-2"
-                            onChange={(e) => setCourse({ ...course, department: e.target.value })}
-                        />
-                        <FormControl
-                            placeholder="Subject"
-                            className="mb-2"
-                            onChange={(e) => setCourse({ ...course, subject: e.target.value })}
-                        />
-                        <FormControl
-                            placeholder="Course Number"
-                            className="mb-2"
-                            onChange={(e) => setCourse({ ...course, number: e.target.value })}
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowForm(false)}>
-                            Cancel
-                        </Button>
-                        <Button onClick={createCourse} className="btn btn-danger">Add Course</Button>
-                    </Modal.Footer>
-                </Modal>
             </div>
         </div>
     );
