@@ -59,7 +59,7 @@ export default function NUCourse() {
 
     useEffect(() => {
         fetchCourses();
-    }, [courses]);
+    }, []);
 
     return (
         <div id="wd-nucourse">
