@@ -120,6 +120,7 @@ export default function NUCourse() {
                         <Card.Body>
                             <Card.Title>Created by Scott Brinkley</Card.Title>
                             <Card.Text className="p-2">
+                                Section 04 <br />
                                 <a href="https://github.com/scomitchell/nucourse-react-web-app">
                                     React Project Github
                                 </a> <br />
