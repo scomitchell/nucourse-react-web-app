@@ -37,7 +37,7 @@ export default function MyProfile({ profile, setProfile }:
 
     useEffect(() => {
         fetchReviews();
-    }, [])
+    }, [profile])
 
     return (
         <div id="wd-my-profile" className="d-flex">

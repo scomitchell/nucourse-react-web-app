@@ -64,7 +64,7 @@ export default function NUCourse() {
     return (
         <div id="wd-nucourse">
 
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
                 <h1 className="p-3">NUCourse</h1>
 
                 {currentUser && currentUser.role === "ADMIN" && (
@@ -74,6 +74,16 @@ export default function NUCourse() {
                 )}
 
             </div>
+
+            {!currentUser &&
+                <div className="ms-3 align-items-center">
+                    <span>Please sign in to review:{" "}</span>
+                    <Link to="/NUCourse/Account/Signin" className="btn btn-primary ms-3">
+                        Signin
+                    </Link>
+                </div>
+            }
+
             <div className="p-3 d-flex">
                 <div>
                     <FormControl className="mb-2" placeholder="Search" id="wd-search"
@@ -114,6 +124,19 @@ export default function NUCourse() {
                 </div>
 
                 <div className="ps-3">
+                    <Card className="mb-2">
+                        <Card.Body>
+                            <Card.Title>Created By Scott Brinkley</Card.Title>
+                            <Card.Text className="p-2">
+                                <a href="https://github.com/scomitchell/nucourse-react-web-app">
+                                    React Project Github
+                                </a> <br />
+                                <a href="https://github.com/scomitchell/nucourse-node-server-app">
+                                    Node Project Github
+                                </a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
                     <Card>
                         <Card.Body>
                             <Card.Title>Methodology</Card.Title>
