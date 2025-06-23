@@ -10,6 +10,7 @@ export default function CoursePage() {
     const [course, setCourse] = useState<any>({});
     const [reviews, setReviews] = useState<any>([]);
     const [review, setReview] = useState<any>({});
+    
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
     const fetchCourse = async () => {

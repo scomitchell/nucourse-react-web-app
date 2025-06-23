@@ -22,6 +22,10 @@ export default function NUCourse() {
         );
     };
 
+    const deleteCourse = async (courseId: string) => {
+        await client.deleteCourse(courseId);
+    };
+
     const filterCoursesByTitle = async (title: string) => {
         if (title) {
             const courses = await client.findCoursesByTitle(title);
@@ -55,7 +59,7 @@ export default function NUCourse() {
 
     useEffect(() => {
         fetchCourses();
-    }, []);
+    }, [courses]);
 
     return (
         <div id="wd-nucourse">
@@ -95,6 +99,14 @@ export default function NUCourse() {
                                             <span className="text-warning">{renderStars(course.learning_score)}</span>
                                         </div>
                                     </Card.Text>
+                                    {currentUser && currentUser.role === "ADMIN" &&
+                                        <Button onClick={(e) => {
+                                            e.preventDefault()
+                                            deleteCourse(course._id)
+                                        }} className="btn btn-danger">
+                                            Delete Course
+                                        </Button>
+                                    }
                                 </Card.Body>
                             </Link>
                         </Card>
